@@ -1,0 +1,24 @@
+<ng-wizard [config]="config"  (stepChanged)="stepChanged($event)">
+      
+    <ng-wizard-step [title]="'Primer paso'" [description]="'Ingresa tus datos'"
+      [canEnter]="isValidTypeBoolean" [canExit]="isValidFunctionReturnsBoolean.bind(this)">
+      <form [formGroup]="form" (submit)="send()">
+        <div class="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" formControlName="name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </ng-wizard-step>
+    
+    <ng-wizard-step [title]="'Segundo paso'" [description]="'Visualiza tu identificación'">
+      <span>Step 2 content</span>
+      <h2>{{form.value.name}}</h2>
+    </ng-wizard-step>
+    
+    <ng-wizard-step [title]="'Tercer paso'" [description]="'Descargar PDF'"
+      [canEnter]="isValidFunctionReturnsObservable.bind(this)" [canExit]="isValidFunctionReturnsBoolean.bind(this)">
+      <span>Step 3 content</span>
+    </ng-wizard-step>
+  
+  </ng-wizard>
