@@ -1,24 +1,146 @@
 <ng-wizard [config]="config"  (stepChanged)="stepChanged($event)">
-      
     <ng-wizard-step [title]="'Primer paso'" [description]="'Ingresa tus datos'"
       [canEnter]="isValidTypeBoolean" [canExit]="isValidFunctionReturnsBoolean.bind(this)">
-      <form [formGroup]="form" (submit)="send()">
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" formControlName="name">
+      <div class="container mt-4">
+        <div class="col">
+          <div class="column is-6 is-offset-3">
+            <h3 class="title is-3">Registro</h3>
+            <form [formGroup]="formRegistro" (ngSubmit)="saveData()">
+              <div class="row align-items-start form-group">
+                <div class="col">
+                  <label class="lavel">Nombre</label>
+                  <input type="text" class="form-control" placeholder="Omar" formControlName="nombreP"/>
+                </div>
+                <div class="col">
+                  <label class="lavel">Apellido Paterno</label>
+                  <input type="text" class="form-control" placeholder="Perez" formControlName="apPaterno"/>
+                </div>
+                <div class="col">
+                  <label class="lavel">Apellido Materno</label>
+                  <input type="text" class="form-control" placeholder="Juarez" formControlName="apMaterno"/>
+                </div>
+              </div>
+              <br />
+              <div class="row align-items-start">
+                <div class="col">
+                  <label class="lavel">Fecha de Nacimiento</label>
+                  <input type="date" class="form-control" formControlName="fechaNac" [(ngModel)]="selectFecha" (blur)="onBlurMethod()"/>
+                </div>
+                <div class="col">
+                  <label class="lavel">Género</label>
+                  <select class="form-select" formControlName="generoP" >
+                    <option [ngValue]="null" disabled>Por favor selecciona una opción</option>
+                    <option [ngValue]="genero" *ngFor="let genero of generos">{{genero.nombre}}</option>
+                    </select>
+                </div>
+                <div class="col">
+                  <label class="lavel">Nacionalidad</label>
+                  <select class="form-select" formControlName="nacionalidadP">
+                    <option [ngValue]="null" disabled>Por favor selecciona una opción</option>
+                    <option [ngValue]="nacionalidad" *ngFor="let nacionalidad of nacionalidades">{{nacionalidad.nombre}}</option>
+                    </select>
+                </div>
+              </div>
+              <br />
+              <div class="row align-items-start">
+                <div class="col" *ngIf="isMayor">
+                  <label class="lavel">R.F.C.</label>
+                  <input type="text" class="form-control" formControlName="rfcP" />
+                </div>
+                <div class="col">
+                  <label class="lavel">Ocupación</label>
+                  <input type="text" class="form-control" formControlName="ocupacionP"/>
+                </div>
+              </div>
+              <br />
+              <div class="row align-items-start">
+                <div class="col">
+                  <label class="lavel">Club de Fútbol </label>
+                  <select [(ngModel)]="selectClube" class="form-select" formControlName="clubP">
+                    <option [ngValue]="null" disabled>Por favor selecciona una opción</option>
+                    <option *ngFor="let club of clubes" [ngValue]="club">{{club.nombre}}</option>
+                    </select>
+                </div>
+                <div class="col">
+                  <img
+                    src="{{selectClube?.logo}}"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <br />
+              <div class="field">
+                <p class="control">
+                  <button class="btn btn-primary">Enviar información</button>
+                </p>
+              </div>
+            </form>
+          </div>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+      </div>
     </ng-wizard-step>
-    
+
     <ng-wizard-step [title]="'Segundo paso'" [description]="'Visualiza tu identificación'">
       <span>Step 2 content</span>
-      <h2>{{form.value.name}}</h2>
+      <div class="container">
+      <div class="card" style="width: 30rem;">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-8 bg-primary bg-gradient rounded ">
+              <h4 class="text-white text-center mt-3">Club de Fútbol {{persona?.clubP?.nombre}}</h4>
+            </div>
+            <div class="col-4 text-end">
+              <img src="{{persona?.clubP?.logo}}" alt="..." >
+            </div>
+          </div>
+
+          <div class="row p-3">
+            <div class="col-4">
+              <img class="border" src="../../../../assets/img/logo_fmf.png" alt="" style="width: 70%;">
+            </div>
+            <div class="col-8">
+            <h5> Miembro de staff {{persona?.nombreP}}</h5>
+            <h6> Apellido Paterno: {{persona?.apPaterno}}</h6>
+            <h6> Apellido Materno: {{persona?.apMaterno}}</h6>
+            <h6> Nacionalidad: {{persona?.nacionalidadP?.nombre}} / {{persona?.nacionalidadP?.continente}} </h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     </ng-wizard-step>
-    
+
     <ng-wizard-step [title]="'Tercer paso'" [description]="'Descargar PDF'"
       [canEnter]="isValidFunctionReturnsObservable.bind(this)" [canExit]="isValidFunctionReturnsBoolean.bind(this)">
-      <span>Step 3 content</span>
-    </ng-wizard-step>
-  
+      <div class="container">
+        <div class="container" id="registroInfo" #registroInfo>
+          <div class="card" style="width: 30rem;">
+            <div class="card-body">
+              <div class="row">
+                <div class="col bg-primary rounded ">
+                  <h4 class="text-white text-center mt-3">Club de Fútbol {{persona?.clubP?.nombre}}</h4>
+                </div>
+                </div>
+                <div class="row p-3">
+                  <div class="col">
+                  <h5> Nombre: {{persona?.nombreP}}</h5>
+                  <h6> Apellido Paterno: {{persona?.apPaterno}}</h6>
+                  <h6> Apellido Materno: {{persona?.apMaterno}}</h6>
+                  <h6> Nacionalidad: {{persona?.nacionalidadP?.nombre}} / {{persona?.nacionalidadP?.continente}} </h6>
+                  <h6> Fecha de nacimiento: {{persona?.fechaNac}} </h6>
+                  <h6> Género: {{persona?.generoP?.nombre}}</h6>
+                  <h6> Ocupacion: {{persona?.ocupacionP}}</h6>
+                  <h6 *ngIf="persona?.rfcP"> RFC: {{persona?.rfcP}}</h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <button (click)="pdfCreate()"class="btn btn-info">
+        Si no se descarga da click aquí
+      </button>
+    </div>
+  </ng-wizard-step>
+
   </ng-wizard>

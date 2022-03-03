@@ -1,4 +1,6 @@
-export const nacionalidades = [{
+import { Nacionalidades } from "../models/nacionalidades";
+
+export const nacionalidades:Nacionalidades[] = [{
                             id : 1,
                             nombre : 'Mexicana',
                             continente : 'América'

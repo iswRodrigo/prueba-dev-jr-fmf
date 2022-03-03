@@ -1,4 +1,6 @@
-export const generos = [{
+import { Genero } from "../models/genero";
+
+export const generos: Genero[] = [{
                             id : 1,
                             nombre : 'Femenino'
                         },
